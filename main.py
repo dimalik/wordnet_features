@@ -52,5 +52,5 @@ if __name__ == '__main__':
     ss = wn.all_synsets()
     ss_n = [ExtSynset(x.name()) for x in ss if x.pos() == 'n']
 
-    feature_list = pd.concat([s.get_features() for s in ss_n])
+    feature_list = pd.concat([s.get_features() for s in ss_n]).reset_index()
     feature_list.to_csv('wordnet_feature_list_nouns.csv')
