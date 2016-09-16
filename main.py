@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import collections
 
 import pandas as pd
@@ -25,7 +26,8 @@ class ExtSynset(object):
 
     def get_hypernyms(self):
         hyps = self.synset.tree(self.hyp)
-        return list(set([x.name() for x in self.flatten(hyps)]))
+        return list(set([x.name() for x in self.flatten(hyps)
+                         if x.name() is not self.synset.name()]))
 
     def get_meronyms(self):
         return [x.name() for x in self.synset.part_meronyms()]
@@ -48,7 +50,7 @@ class ExtSynset(object):
 
 if __name__ == '__main__':
     ss = wn.all_synsets()
-    ss_n = [x for x in ss if x.pos() == 'n']
+    ss_n = [ExtSynset(x.name()) for x in ss if x.pos() == 'n']
 
     feature_list = pd.concat([s.get_features() for s in ss_n])
     feature_list.to_csv('wordnet_feature_list_nouns.csv')
